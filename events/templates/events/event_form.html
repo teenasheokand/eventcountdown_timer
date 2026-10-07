@@ -1,0 +1,27 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+<h1>{{ page_title }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Event Name</label>
+    <input type="text" name="title" value="{{ event.title|default:'' }}" required>
+
+    <label>Date</label>
+    <input type="date" name="date" value="{{ event.date|date:'Y-m-d' }}" required>
+
+    <label>Time</label>
+    <input type="time" name="time" value="{{ event.time|time:'H:i' }}" required>
+
+    <label>Location</label>
+    <input type="text" name="location" value="{{ event.location|default:'' }}" required>
+
+    <label>Description</label>
+    <textarea name="description" rows="5">{{ event.description|default:'' }}</textarea>
+
+    <button class="button" type="submit">Save Event</button>
+    <a href="{% url 'event_list' %}">Cancel</a>
+</form>
+{% endblock %}

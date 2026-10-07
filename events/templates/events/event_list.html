@@ -1,0 +1,35 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+<h1>My Events</h1>
+
+{% if delete_event %}
+<div class="confirm">
+    <strong>Delete "{{ delete_event.title }}"?</strong>
+    <form method="post" action="{% url 'delete_event' delete_event.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button class="button" type="submit">Yes, Delete</button>
+    </form>
+    <a href="{% url 'event_list' %}">Cancel</a>
+</div>
+{% endif %}
+
+<a class="button" href="{% url 'add_event' %}">+ Add New Event</a>
+
+{% for event in events %}
+<div class="card">
+    <h2>{{ event.title }}</h2>
+    <p><strong>Date:</strong> {{ event.date }}</p>
+    <p><strong>Time:</strong> {{ event.time }}</p>
+    <p><strong>Location:</strong> {{ event.location }}</p>
+    <p><strong>Description:</strong> {{ event.description|default:"No description" }}</p>
+
+    <a class="edit" href="{% url 'edit_event' event.id %}">Edit</a>
+    <a class="delete" href="{% url 'delete_event' event.id %}">Delete</a>
+</div>
+{% empty %}
+<div class="card">
+    <p>No events yet. Click "Add New Event" to create one.</p>
+</div>
+{% endfor %}
+{% endblock %}
